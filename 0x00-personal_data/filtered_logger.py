@@ -5,11 +5,11 @@ from typing import List
 import logging
 
 
-def filter_datum(fields: List, redaction: str,
+def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """eturns the log message obfuscated"""
-    return re.sub(fr'({"|".join(fields)})=[^{separator}]*',
-                  fr'\1={redaction}', message)
+    return re.sub(rf'({"|".join(fields)})=[^{separator}]*',
+                  rf'\1={redaction}', message)
 
 
 class RedactingFormatter(logging.Formatter):
