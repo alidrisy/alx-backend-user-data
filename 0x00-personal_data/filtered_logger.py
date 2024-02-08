@@ -26,13 +26,16 @@ def get_db() -> connector.connection.MySQLConnection:
     db_host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    db_connector = connector.connect(
-        host=db_host,
-        user=db_username,
-        password=db_pass,
-        database=db_name
-    )
-    return db_connector
+    try:
+        db_connector = connector.connect(
+            host=db_host,
+            user=db_username,
+            password=db_pass,
+            database=db_name
+        )
+        return db_connector
+    except Exception:
+        raise
 
 
 def filter_datum(fields: List[str], redaction: str,
