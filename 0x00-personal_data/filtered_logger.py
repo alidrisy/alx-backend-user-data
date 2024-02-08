@@ -33,7 +33,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
             host=db_host,
             database=db_name
         )
-        return db_connector
+        return None
     except mysql.connector.Error:
         return None
 
