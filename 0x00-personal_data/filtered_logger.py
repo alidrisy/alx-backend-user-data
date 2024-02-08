@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """ Model for filtered data """
 import re
-from typing import List
 import logging
+from typing import List
+from mysq.connector import connect
+from os import getenv
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -16,6 +18,21 @@ def get_logger() -> logging.Logger:
     user_stream_header.setFormatter(RedactingFormatter)
     user_data.addFilter(user_stream_header)
     return user_data
+
+
+def get_db():
+    """ Create and returns a connector to the database """
+    db_name = getenv("PERSONAL_DATA_DB_NAME", "holberton")
+    db_host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    db_connector = connect(
+        host=db_host,
+        user=db_username,
+        password=db_pass,
+        database=db_name
+    )
+    return db_connector
 
 
 def filter_datum(fields: List[str], redaction: str,
