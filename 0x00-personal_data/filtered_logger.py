@@ -18,7 +18,6 @@ def get_logger() -> logging.Logger:
     return user_data
 
 
-
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """eturns the log message obfuscated"""
