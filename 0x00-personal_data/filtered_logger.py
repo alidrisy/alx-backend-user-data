@@ -2,8 +2,8 @@
 """ Model for filtered data """
 import re
 import logging
+import mysql.connector
 from typing import List
-from mysql import connector
 from os import getenv
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -20,14 +20,14 @@ def get_logger() -> logging.Logger:
     return user_data
 
 
-def get_db() -> connector.connection.MySQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Create and returns a connector to the database """
-    db_name = getenv("PERSONAL_DATA_DB_NAME", "holberton")
+    db_name = getenv("PERSONAL_DATA_DB_NAME")
     db_host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
     try:
-        db_connector = connector.connection.MySQLConnection(
+        db_connector = mysql.connector.connection.MySQLConnection(
             host=db_host,
             user=db_username,
             password=db_pass,
