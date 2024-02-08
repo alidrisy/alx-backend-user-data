@@ -3,7 +3,7 @@
 import re
 import logging
 from typing import List
-from mysq import connector
+from mysql import connector
 from os import getenv
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
