@@ -22,20 +22,13 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ connector to MySQL database """
-    db_name = getenv("PERSONAL_DATA_DB_NAME")
-    db_host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
-    db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
-    db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    try:
-        db_connector = mysql.connector.connect(
-            user=db_username,
-            password=db_pass,
-            host=db_host,
-            database=db_name
-        )
-        return db_connector
-    except mysql.connector.Error:
-        return None
+    db_con = mysql.connector.connect(
+        user=getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        host=getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        database=getenv("PERSONAL_DATA_DB_NAME")
+    )
+    return db_con
 
 
 def filter_datum(fields: List[str], redaction: str,
