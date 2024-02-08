@@ -27,7 +27,7 @@ def get_db() -> connector.connection.MySQLConnection:
     db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
     try:
-        db_connector = connector.connect(
+        db_connector = connector.connection.MySQLConnection(
             host=db_host,
             user=db_username,
             password=db_pass,
