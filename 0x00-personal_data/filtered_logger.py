@@ -3,7 +3,7 @@
 import re
 import logging
 from typing import List
-from mysq.connector import connect
+from mysq import connector
 from os import getenv
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -20,13 +20,13 @@ def get_logger() -> logging.Logger:
     return user_data
 
 
-def get_db():
+def get_db() -> connector.connection.MySQLConnection:
     """ Create and returns a connector to the database """
     db_name = getenv("PERSONAL_DATA_DB_NAME", "holberton")
     db_host = getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_username = getenv("PERSONAL_DATA_DB_USERNAME", "root")
     db_pass = getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    db_connector = connect(
+    db_connector = connector.connect(
         host=db_host,
         user=db_username,
         password=db_pass,
