@@ -4,6 +4,20 @@ import re
 from typing import List
 import logging
 
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
+def get_logger() -> logging.Logger:
+    """ Create and  returns a logging.Logger object """
+    user_data = logging.getLogger("user_data")
+    user_data.setLevel(logging.INFO)
+    user_data.propagate = False
+    user_stream_header = logging.StreamHandler()
+    user_stream_header.setFormatter(RedactingFormatter)
+    user_data.addFilter(user_stream_header)
+    return user_data
+
+
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
