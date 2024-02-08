@@ -35,7 +35,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         )
         return db_connector
     except mysql.connector.Error:
-        raise
+        return None
 
 
 def filter_datum(fields: List[str], redaction: str,
