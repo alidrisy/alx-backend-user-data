@@ -22,16 +22,13 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ connector to MySQL database """
-    try:
-        db_con = mysql.connector.connect(
-            user=getenv("PERSONAL_DATA_DB_USERNAME", "root"),
-            password=getenv("PERSONAL_DATA_DB_PASSWORD", ""),
-            host=getenv("PERSONAL_DATA_DB_HOST", "localhost"),
-            database=getenv("PERSONAL_DATA_DB_NAME", "")
-        )
-        return db_con
-    except mysql.connector.Error:
-        raise
+    db_con = mysql.connector.connect(
+        user=getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        password=getenv("PERSONAL_DATA_DB_PASSWORD", ""),
+        host=getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        database=getenv("PERSONAL_DATA_DB_NAME")
+    )
+    return db_con
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -58,3 +55,24 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(self.fields, self.REDACTION,
                                   record.getMessage(), self.SEPARATOR)
         return super().format(record)
+
+
+def main() -> None:
+    """ obtain a database connection and print content """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM USERS;")
+    headers = [field[0] for field in cursor.description]
+    logger = get_logger()
+    for row in cursor:
+        info_answer = ''
+        for f, p in zip(row, headers):
+            info_answer += f'{p}={(f)}; '
+        logger.info(info_answer)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    main()
