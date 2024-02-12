@@ -3,7 +3,6 @@
 from api.v1.auth.auth import Auth
 from models.user import User
 from typing import TypeVar
-from os import path
 import base64
 
 
@@ -46,6 +45,10 @@ class BasicAuth(Auth):
         """ Returns the User instance based on his email and password """
         if user_email is None or user_pwd is None:
             return None
+
+        if type(user_email) is not str or type(user_pwd) is not str:
+            return None
+
         try:
             users = User.search({"email": user_email})
 
