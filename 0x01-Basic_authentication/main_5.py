@@ -14,7 +14,7 @@ user.first_name = "Bob"
 user.last_name = "Dylan"
 user.password = user_clear_pwd
 print("New user: {}".format(user.display_name()))
-user.save()
+# user.save()
 
 """ Retreive this user via the class BasicAuth """
 
