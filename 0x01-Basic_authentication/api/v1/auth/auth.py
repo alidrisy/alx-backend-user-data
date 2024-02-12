@@ -16,7 +16,9 @@ class Auth:
         return all(path != i for i in excluded_paths)
 
     def authorization_header(self, request=None) -> str:
-        """ Returns None """
+        """ Returns the value of the header request Authorization or None """
+        if request:
+            return request.headers.get("Authorization", None)
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
