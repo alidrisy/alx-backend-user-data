@@ -40,4 +40,3 @@ class Auth:
         if _my_session_id:
             return request.cookies.get(_my_session_id)
         return None
-
