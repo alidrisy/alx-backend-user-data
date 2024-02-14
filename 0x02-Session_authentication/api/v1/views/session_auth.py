@@ -3,7 +3,7 @@
 Module of SessionAuth views
 """
 from api.v1.views import app_views
-from flask import jsonify, request, make_response
+from flask import jsonify, request, make_response, abort
 from models.user import User
 from os import getenv
 
@@ -34,3 +34,17 @@ def login():
     resp = make_response(jsonify(user.to_json()))
     resp.set_cookie(getenv("SESSION_NAME"), session_id)
     return resp
+
+
+@app_views.route("/auth_session/logout/", methods=["DELETE"],
+                 strict_slashes=False)
+def logout():
+    """ DELETE /api/v1//auth_session/logout
+    Return:
+      - An empty JSON dictionary with the status code 200
+    """
+    from api.v1.app import auth
+    stat = auth.destroy_session(request)
+    if stat:
+        return jsonify({}), 200
+    abort(404)
