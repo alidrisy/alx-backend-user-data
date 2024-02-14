@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" Module of SessionAuth views
+"""
+Module of SessionAuth views
 """
 from api.v1.views import app_views
 from flask import jsonify, request, make_response
@@ -24,16 +25,16 @@ def login():
     password = request.form.get("password")
 
     if type(email) != str or (email and len(email) == 0):
-        return jsonify({ "error": "email missing" }), 400
+        return jsonify({"error": "email missing"}), 400
     if type(password) != str or (password and len(password) == 0):
-        return jsonify({ "error": "password missing" }), 400
+        return jsonify({"error": "password missing"}), 400
     try:
         users = User.search({"email": email})
         user = users[0]
     except Exception:
-        return jsonify({ "error": "no user found for this email" }), 404
+        return jsonify({"error": "no user found for this email"}), 404
     if not user.is_valid_password(password):
-        return jsonify({ "error": "wrong password" }), 401
+        return jsonify({"error": "wrong password"}), 401
     from api.v1.app import auth
     session_id = auth.create_session(user.id)
     resp = make_response(jsonify(user.to_json()))
