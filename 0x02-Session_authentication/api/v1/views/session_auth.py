@@ -11,15 +11,9 @@ from os import getenv
 @app_views.route("/auth_session/login/", methods=["POST"],
                  strict_slashes=False)
 def login():
-    """ POST /api/v1//auth_session/login/
-    FORM body:
-      - email
-      - password
+    """ POST /api/v1//auth_session/login
     Return:
       - User object JSON represented based on the email
-      - 400 if no email or password
-      - 404 If no User found
-      - 401 If the password is not the one of the User found
     """
     email = request.form.get("email")
     password = request.form.get("password")
