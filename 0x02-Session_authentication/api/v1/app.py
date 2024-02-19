@@ -9,6 +9,8 @@ from flask_cors import (CORS, cross_origin)
 from api.v1.auth.auth import Auth
 from api.v1.auth.basic_auth import BasicAuth
 from api.v1.auth.session_auth import SessionAuth
+from api.v1.auth.session_exp_auth import SessionExpAuth
+from api.v1.auth.session_db_auth import SessionDBAuth
 import os
 
 
@@ -17,12 +19,17 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 auth_type = os.getenv("AUTH_TYPE", None)
-if auth_type:
-    auth = Auth()
+
 if auth_type == 'basic_auth':
     auth = BasicAuth()
-if auth_type == 'session_auth':
+elif auth_type == 'session_auth':
     auth = SessionAuth()
+elif auth_type == 'session_exp_auth':
+    auth = SessionExpAuth()
+elif auth_type == 'session_db_auth':
+    auth = SessionDBAuth()
+else:
+    auth = Auth()
 
 
 @app.before_request
