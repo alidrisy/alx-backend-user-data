@@ -59,10 +59,11 @@ def logout():
     """ DELETE /sessions
     """
     session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        AUTH.destroy_session(user.id)
+    except Exception:
         abort(403)
-    AUTH.destroy_session(user.id)
     return redirect('/')
 
 
@@ -71,10 +72,12 @@ def profile():
     """ GET /profile
     """
     session_id = request.cookies.get("session_id")
-    user = AUTH.get_user_from_session_id(session_id)
-    if user:
-        return jsonify({"email": user.email}), 200
-    abort(403)
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        email = user.email
+    except Exception:
+        abort(403)
+    return jsonify({"email": email}), 200
 
 
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
@@ -91,6 +94,24 @@ def get_reset_password_token():
     except ValueError:
         abort(403)
     return jsonify({"email": email, "reset_token": reset})
+
+
+@app.route("/reset_password", methods=["PUT"], strict_slashes=False)
+def update_password():
+    """ GET /reset_password
+    JSON body:
+      - email
+    Return:
+      - JSON represented
+    """
+    email = request.form.get("email")
+    reset_token = request.form.get("reset_token")
+    new_password = request.form.get("new_password")
+    try:
+        AUTH.update_password(reset_token, new_password)
+    except ValueError:
+        abort(403)
+    return jsonify({"email": email, "message": "Password updated"})
 
 
 if __name__ == "__main__":
