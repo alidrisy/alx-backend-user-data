@@ -58,7 +58,7 @@ def login():
 def logout():
     """ DELETE /sessions
     """
-    session_id = request.cookies.get("session_id")
+    session_id = request.form.get("session_id")
     try:
         user = AUTH.get_user_from_session_id(session_id)
         AUTH.destroy_session(user.id)
@@ -71,7 +71,7 @@ def logout():
 def profile():
     """ GET /profile
     """
-    session_id = request.cookies.get("session_id")
+    session_id = request.form.get("session_id")
     try:
         user = AUTH.get_user_from_session_id(session_id)
         email = user.email
