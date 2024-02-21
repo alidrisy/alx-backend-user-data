@@ -59,11 +59,10 @@ def logout():
     """ DELETE /sessions
     """
     session_id = request.cookies.get("session_id")
-    try:
-        user = AUTH.get_user_from_session_id(session_id)
-        AUTH.destroy_session(user.id)
-    except Exception:
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
         abort(403)
+    AUTH.destroy_session(user.id)
     return redirect('/')
 
 
@@ -72,12 +71,10 @@ def profile():
     """ GET /profile
     """
     session_id = request.cookies.get("session_id")
-    try:
-        user = AUTH.get_user_from_session_id(session_id)
-        email = user.email
-    except Exception:
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
         abort(403)
-    return jsonify({"email": email}), 200
+    return jsonify({"email": user.email})
 
 
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
