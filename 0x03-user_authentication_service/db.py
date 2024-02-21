@@ -31,12 +31,9 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """ Create and returns a User object """
         user = User(email=email, hashed_password=hashed_password)
-        try:
-            self._session.add(user)
-            self._session.commit()
-        except Exception:
-            raise
+        self._session.add(user)
+        self._session.commit()
         return user
