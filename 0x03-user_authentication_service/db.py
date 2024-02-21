@@ -49,5 +49,7 @@ class DB:
         in the method’s arguments """
         user = self.find_user_by(id=user_id)
         for k, val in kwargs.items():
+            if not hasattr(user, k):
+                raise ValueError
             setattr(user, k, val)
         self._session.commit()
