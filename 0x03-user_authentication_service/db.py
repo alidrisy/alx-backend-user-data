@@ -40,11 +40,6 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns the first row found in the users table """
-        if kwargs is None:
-            raise InvalidRequestError
-        for k in kwargs.keys():
-            if not hasattr(User, k):
-                raise InvalidRequestError
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
         except InvalidRequestError:
