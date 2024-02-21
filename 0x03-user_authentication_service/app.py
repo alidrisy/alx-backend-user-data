@@ -55,7 +55,7 @@ def login():
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout() -> str:
+def logout():
     """ DELETE /sessions
     """
     session_id = request.cookies.get("session_id")
@@ -67,7 +67,7 @@ def logout() -> str:
 
 
 @app.route("/profile", methods=["GET"], strict_slashes=False)
-def profile() -> str:
+def profile():
     """ GET /profile
     """
     session_id = request.cookies.get("session_id")
