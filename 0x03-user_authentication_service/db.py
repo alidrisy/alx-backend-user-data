@@ -5,7 +5,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import NoResultFound, InvalidRequestError
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 from user import Base, User
 
 
@@ -41,6 +42,9 @@ class DB:
         """ Returns the first row found in the users table """
         if kwargs is None:
             raise InvalidRequestError
+        for k in kwargs.keys():
+            if not hasattr(User, k):
+                raise InvalidRequestError
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
         except InvalidRequestError:
