@@ -31,7 +31,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar(User):
+    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
         """ Create and returns a User object """
         user = User()
         user.email = email
