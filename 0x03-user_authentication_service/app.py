@@ -11,7 +11,7 @@ AUTH = Auth()
 app = Flask(__name__)
 
 
-@app.route("/", methods=["GET"], strict_slashes=False)
+@app.route("/", methods=["GET"])
 def index():
     """ Main method """
     return jsonify({"message": "Bienvenue"})
@@ -55,16 +55,15 @@ def login():
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout():
+def logout() -> str:
     """ DELETE /sessions
     """
     session_id = request.cookies.get("session_id")
     user = AUTH.get_user_from_session_id(session_id)
     if user is None:
         abort(403)
-    else:
-        AUTH.destroy_session(user.id)
-        return redirect('/')
+    AUTH.destroy_session(user.id)
+    return redirect('/')
 
 
 if __name__ == "__main__":
