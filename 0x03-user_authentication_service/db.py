@@ -39,5 +39,7 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """ Returns the first row found in the users table """
-        user = self._session.query(User).filter_by(**kwargs).one()
+        user = self._session.query(User).filter_by(**kwargs).first()
+        if user == None:
+            raise NoResultFound
         return user
