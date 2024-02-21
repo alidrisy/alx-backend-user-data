@@ -36,7 +36,7 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return user
-    
+
     def find_user_by(self, **kwargs) -> User:
         """ Returns the first row found in the users table """
         user = self._session.query(User).filter_by(**kwargs).one()
