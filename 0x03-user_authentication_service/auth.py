@@ -20,8 +20,8 @@ class Auth:
         """Initialize a new DB instance
         """
         self._db = DB()
-    
-    def register_user(self, email, password) -> User:
+
+    def register_user(self, email: str, password: str) -> User:
         """ Create and return the User object """
         try:
             self._db.find_user_by(email=email)
